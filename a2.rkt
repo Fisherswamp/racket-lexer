@@ -104,7 +104,7 @@
   (validate-regex str #px"^[^\\d\",(){};.\\s]([^,\"(){};.\\s]*)(?=[\r\n\t (){},;.]|$)"))
 ;; check if a string is a reserved name, and if so return that name
 (define (reserved-name? str)
-  (if (regexp-match #rx"^((def)|(if)|(fun)|(not)|(and)|(or))" str)
+  (if (regexp-match #rx"^((def)|(if)|(fun)|(not)|(and)|(or))(?=[\r\n\t (){},;.]|$)" str)
       (string->symbol (string-upcase str))
       #f))
 
