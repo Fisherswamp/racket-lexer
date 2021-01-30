@@ -136,10 +136,8 @@
                                     (parse-rec (string-append-immutable cur-str (list->string (list parsed-char))) (substring rem-str 1) #f))
                                   (if (eq? char #\\)
                                       (parse-rec cur-str (substring rem-str 1) #t)
-                                      (if (eq? char #\") ;; If found end of string next character must be whitespace, punctuation or end of string
-                                          (if (or (= (string-length rem-str) 1) (regexp-match #rx"[\\r\\n\\t (){},;.]" (list->string (list (string-ref rem-str 1)))))
-                                              (cons cur-str (substring rem-str 1))
-                                              'error)
+                                      (if (eq? char #\")
+                                          (cons cur-str (substring rem-str 1)) ;;Found end of string
                                           (parse-rec (string-append-immutable cur-str (list->string (list char))) (substring rem-str 1) #f)))))
                             'error))])
     (parse-rec "" str #f)))
@@ -150,7 +148,7 @@
                     check-equal?))
   (check-equal? (lex "") null)
   )
-#|
+
 (lex "
 def factorial = fun (n) {
   // first check base case
@@ -159,6 +157,5 @@ def factorial = fun (n) {
      factorial(-(n, 1)) /* recursive case */ )
 };
 
-print(+(\"5! is \", factorial(5)))
+print(+(\"5! is , factorial(5)))
 ")
-|#
